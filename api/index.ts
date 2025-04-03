@@ -35,8 +35,9 @@ const GAuth = new google.auth.GoogleAuth({
 	scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
+// @ts-ignore
 const sheet = google.sheets({
-	version: "v4",
+	version: "v3",
 	auth: GAuth,
 });
 
