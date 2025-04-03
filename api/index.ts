@@ -38,7 +38,8 @@ const GAuth = new google.auth.GoogleAuth({
 const sheet = google.sheets({
 	version: "v4",
 	auth: GAuth,
-});
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+} as any);
 
 type BaseType = {
 	id: string;
