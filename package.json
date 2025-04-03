@@ -4,7 +4,7 @@
   "description": "This is the updated version of previous shortin project. It is a URL shortener that uses Google APIs to shorten URLs and store them in a database.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon api/index.ts",
+    "dev": "ts-node api/index.ts",
     "build": "tsc --outDir dist",
     "start": "nodemon dist/api/index.js"
   },
