@@ -1,5 +1,5 @@
 import express from "express";
-import { google, GoogleApis } from "googleapis";
+import { google } from "googleapis";
 import dotenv from "dotenv";
 import { generateShortCode } from "../helper/generateShortCode";
 import { rateLimiter } from "../middleware/rateLimiter";
@@ -52,7 +52,7 @@ type BaseType = {
 
 // GET /
 // Just return a simple message
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (_req: Request, res: Response) => {
 	res.send("Welcome to the URL Shortener API!");
 });
 
