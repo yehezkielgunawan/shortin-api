@@ -7,12 +7,13 @@ import { generateShortCode } from "../helper/generateShortCode";
 import { rateLimiter } from "../middleware/rateLimiter";
 
 // Load environment variables first
-dotenv.config();
 
 const app: Express = express();
 const port = 3000;
+dotenv.config();
 
 app.use(express.json());
+
 app.use(rateLimiter(5, 60 * 1000)); // 10 requests per minute, 1 minute window
 
 // Create credentials object from environment variables
@@ -31,13 +32,13 @@ const credentials = {
 };
 
 const auth = new GoogleAuth({
-	credentials,
+	credentials: credentials,
 	scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
 const sheet = google.sheets({
 	version: "v4",
-	auth,
+	auth: auth,
 });
 
 type BaseType = {
