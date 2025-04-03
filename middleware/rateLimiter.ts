@@ -1,7 +1,7 @@
 // custom rate limiter without express-rate-limit
 // Simple in-memory rate limiter
-// biome-ignore lint/style/useImportType: <explanation>
-import { Request, Response, NextFunction } from "express";
+// @ts-ignore
+import type { Request, Response, NextFunction } from "express";
 interface RateLimiterEntry {
 	count: number;
 	lastReset: number;
