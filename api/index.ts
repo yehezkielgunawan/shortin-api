@@ -1,7 +1,6 @@
 import express from "express";
 import type { Request, Response } from "express";
-import { GoogleAuth } from "google-auth-library";
-import { google } from "googleapis";
+import { google, Auth } from "googleapis";
 import dotenv from "dotenv";
 import { generateShortCode } from "../helper/generateShortCode";
 import { rateLimiter } from "../middleware/rateLimiter";
@@ -31,14 +30,14 @@ const credentials = {
 	universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN,
 };
 
-const auth = new GoogleAuth({
+const GAuth = new Auth.GoogleAuth({
 	credentials: credentials,
 	scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
 const sheet = google.sheets({
 	version: "v4",
-	auth: auth,
+	auth: GAuth,
 });
 
 type BaseType = {
