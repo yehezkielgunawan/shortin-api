@@ -1,4 +1,5 @@
-import express, { type Express, type Request, type Response } from "express";
+import express from "express";
+import type { Request, Response, Express } from "express";
 import { GoogleAuth } from "google-auth-library";
 import { google } from "googleapis";
 import dotenv from "dotenv";
@@ -47,6 +48,12 @@ type BaseType = {
 	updatedAt: string;
 	count: number;
 };
+
+// GET /
+// Just return a simple message
+app.get("/", (req: Request, res: Response) => {
+	res.send("Welcome to the URL Shortener API!");
+});
 
 /*POST /shorten
 {
