@@ -31,13 +31,11 @@ const credentials = {
 };
 
 const GAuth = new google.auth.GoogleAuth({
-	credentials: credentials,
 	scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
-// @ts-ignore
 const sheet = google.sheets({
-	version: "v3",
+	version: "v4",
 	auth: GAuth,
 });
 
