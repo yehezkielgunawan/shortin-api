@@ -1,5 +1,5 @@
 import express from "express";
-import type { Request, Response, Express } from "express";
+import type { Request, Response } from "express";
 import { GoogleAuth } from "google-auth-library";
 import { google } from "googleapis";
 import dotenv from "dotenv";
@@ -8,7 +8,7 @@ import { rateLimiter } from "../middleware/rateLimiter";
 
 // Load environment variables first
 
-const app: Express = express();
+const app = express();
 const port = 3000;
 dotenv.config();
 
