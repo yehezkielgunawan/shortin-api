@@ -1,5 +1,6 @@
 import express from "express";
-import type { Request, Response } from "express";
+// biome-ignore lint/style/useImportType: <explanation>
+import { Request, Response, NextFunction } from "express";
 import { google, Auth } from "googleapis";
 import dotenv from "dotenv";
 import { generateShortCode } from "../helper/generateShortCode";
