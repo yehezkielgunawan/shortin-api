@@ -31,6 +31,7 @@ const credentials = {
 };
 
 const GAuth = new google.auth.GoogleAuth({
+	credentials,
 	scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
