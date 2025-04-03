@@ -1,6 +1,7 @@
 // custom rate limiter without express-rate-limit
 // Simple in-memory rate limiter
-import type { Request, Response, NextFunction } from "express";
+// biome-ignore lint/style/useImportType: <explanation>
+import { Request, Response, NextFunction } from "express";
 interface RateLimiterEntry {
 	count: number;
 	lastReset: number;
@@ -63,6 +64,6 @@ export const rateLimiter = (
 		);
 
 		// Continue to the next middleware
-		return next();
+		next();
 	};
 };
