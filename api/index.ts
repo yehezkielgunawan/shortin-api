@@ -1,9 +1,9 @@
 import express from "express";
-import { type Request, type Response, NextFunction } from "express";
 import { google } from "googleapis";
 import dotenv from "dotenv";
 import { generateShortCode } from "../helper/generateShortCode";
 import { rateLimiter } from "../middleware/rateLimiter";
+import type { Request, Response } from "express-serve-static-core";
 
 // Load environment variables first
 

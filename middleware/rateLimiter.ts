@@ -1,7 +1,10 @@
-// custom rate limiter without express-rate-limit
+import type {
+	NextFunction,
+	Request,
+	Response,
+} from "express-serve-static-core";
+
 // Simple in-memory rate limiter
-// @ts-nocheck
-import type { Request, Response, NextFunction } from "express";
 interface RateLimiterEntry {
 	count: number;
 	lastReset: number;
