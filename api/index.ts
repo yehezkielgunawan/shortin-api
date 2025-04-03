@@ -1,7 +1,6 @@
-// @ts-nocheck
 import express from "express";
 import { type Request, type Response, NextFunction } from "express";
-import { google, Auth } from "googleapis";
+import { google } from "googleapis";
 import dotenv from "dotenv";
 import { generateShortCode } from "../helper/generateShortCode";
 import { rateLimiter } from "../middleware/rateLimiter";
@@ -31,7 +30,7 @@ const credentials = {
 	universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN,
 };
 
-const GAuth = new Auth.GoogleAuth({
+const GAuth = new google.auth.GoogleAuth({
 	credentials: credentials,
 	scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
@@ -172,9 +171,11 @@ app.delete("/shorten/:shortCodeInput", async (req: Request, res: Response) => {
 
 		// Logic to delete the row from Google Sheets would go here
 		res.status(200).json({ message: "Short code deleted successfully" });
+		return;
 	} catch (error) {
 		console.error("Error details:", error);
 		res.status(500).json({ error: "Failed to delete short URL" });
+		return;
 	}
 });
 
@@ -219,9 +220,11 @@ app.put("/shorten/:shortCodeInput", async (req: Request, res: Response) => {
 		});
 
 		res.status(200).json({ message: "Short code updated successfully" });
+		return;
 	} catch (error) {
 		console.error("Error details:", error);
 		res.status(500).json({ error: "Failed to update short URL" });
+		return;
 	}
 });
 
@@ -277,9 +280,11 @@ app.get("/shorten/:shortCodeInput", async (req: Request, res: Response) => {
 		});
 
 		res.status(200).json({ url });
+		return;
 	} catch (error) {
 		console.error("Error details:", error);
 		res.status(500).json({ error: "Failed to retrieve short URL" });
+		return;
 	}
 });
 
@@ -321,9 +326,11 @@ app.get(
 			const count = countResponse.data.values?.[0]?.[0];
 
 			res.status(200).json({ count });
+			return;
 		} catch (error) {
 			console.error("Error details:", error);
 			res.status(500).json({ error: "Failed to retrieve short URL stats" });
+			return;
 		}
 	},
 );
