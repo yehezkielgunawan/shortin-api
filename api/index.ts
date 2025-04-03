@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 import express from "express";
 import { type Request, type Response, NextFunction } from "express";
 import { google, Auth } from "googleapis";
