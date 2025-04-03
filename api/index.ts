@@ -224,13 +224,13 @@ app.put("/shorten/:shortCodeInput", async (req: Request, res: Response) => {
 		return;
 	} catch (error) {
 		console.error("Error details:", error);
-		res.status(500).json({ error: "Failed to update short URL" });
+		res.status(500).json({ error: error });
 		return;
 	}
 });
 
 // GET /shorten/:shortCodeInput
-app.get("/shorten/:shortCodeInput", async (req: Request, res: Response) => {
+app.get("/:shortCodeInput", async (req: Request, res: Response) => {
 	const { shortCodeInput } = req.params;
 
 	if (!shortCodeInput) {
