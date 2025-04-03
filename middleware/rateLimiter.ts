@@ -63,6 +63,6 @@ export const rateLimiter = (
 		);
 
 		// Continue to the next middleware
-		next();
+		return next();
 	};
 };
