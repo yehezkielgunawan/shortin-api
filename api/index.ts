@@ -1,5 +1,5 @@
 import express from "express";
-import { google } from "googleapis";
+import { google, GoogleApis } from "googleapis";
 import dotenv from "dotenv";
 import { generateShortCode } from "../helper/generateShortCode";
 import { rateLimiter } from "../middleware/rateLimiter";
@@ -31,15 +31,15 @@ const credentials = {
 };
 
 const GAuth = new google.auth.GoogleAuth({
-	credentials,
+	credentials: credentials,
 	scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+	clientOptions: credentials,
 });
 
 const sheet = google.sheets({
-	version: "v4",
 	auth: GAuth,
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-} as any);
+	version: "v4",
+});
 
 type BaseType = {
 	id: string;
