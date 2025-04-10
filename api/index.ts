@@ -13,7 +13,8 @@ dotenv.config();
 
 app.use(express.json());
 
-app.use(rateLimiter(5, 60 * 1000)); // 10 requests per minute, 1 minute window
+// 30 requests per minute
+app.use(rateLimiter(30, 60 * 1000)); // 30 requests per minute
 
 // Create credentials object from environment variables
 const credentials = {
