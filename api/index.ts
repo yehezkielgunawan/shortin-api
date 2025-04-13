@@ -13,8 +13,8 @@ dotenv.config();
 
 app.use(express.json());
 
-// 30 requests per minute
-app.use(rateLimiter(30, 60 * 1000)); // 30 requests per minute
+// 30 requests per 5 minutes. This is a good rate limit for a URL shortener
+app.use(rateLimiter(30, 5 * 60 * 1000));
 
 // Create credentials object from environment variables
 const credentials = {
