@@ -2,6 +2,8 @@
 
 Shortin v2 is a URL shortening service built with Express and Google Sheets API. It provides a simple and efficient way to shorten long URLs with features like custom aliases, visit tracking, and basic analytics.
 
+API: [https://shortin-api.yehezgun.com](https://shortin-api.yehezgun.com)
+
 ## Features
 
 - Shorten long URLs into compact, shareable links
