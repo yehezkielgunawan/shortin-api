@@ -4,6 +4,8 @@ Shortin v2 is a URL shortening service built with Express and Google Sheets API.
 
 API: [https://shortin-api.yehezgun.com](https://shortin-api.yehezgun.com)
 
+Project idea: [https://roadmap.sh/projects/url-shortening-service](https://roadmap.sh/projects/url-shortening-service)
+
 ## Features
 
 - Shorten long URLs into compact, shareable links
