@@ -1,31 +1,32 @@
 {
-	"name": "shortin-v2",
-	"version": "1.0.0",
-	"description": "This is the updated version of previous shortin project. It is a URL shortener that uses Google APIs to shorten URLs and store them in a database.",
-	"main": "index.js",
-	"scripts": {
-		"dev": "ts-node api/index.ts",
-		"build": "tsc --outDir dist",
-		"start": "nodemon dist/api/index.js",
-		"biome:format": "biome format --write",
-		"biome:lint": "biome lint --write"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf",
-	"dependencies": {
-		"dotenv": "^16.4.7",
-		"express": "^5.1.0",
-		"googleapis": "^148.0.0"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@types/express": "^5.0.1",
-		"@types/express-serve-static-core": "^5.0.6",
-		"@types/node": "^22.13.17",
-		"nodemon": "^3.1.9",
-		"ts-node": "^10.9.2",
-		"typescript": "^5.8.2"
-	}
+  "name": "shortin-v2",
+  "version": "1.0.0",
+  "description": "This is the updated version of previous shortin project. It is a URL shortener that uses Google APIs to shorten URLs and store them in a database.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node api/index.ts",
+    "build": "tsc --outDir dist",
+    "start": "nodemon dist/api/index.js",
+    "biome:format": "biome format --write",
+    "biome:lint": "biome lint --write",
+    "up-latest": "pnpm up --latest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "googleapis": "^148.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/express": "^5.0.2",
+    "@types/express-serve-static-core": "^5.0.6",
+    "@types/node": "^22.15.18",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
 }
