@@ -22,7 +22,7 @@ jobs:
           cache: "pnpm"
       - run: pnpm install
       - run: pnpm sst:deploy
-        with:
+        env:
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           KEY: ${{ secrets.KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
