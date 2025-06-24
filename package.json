@@ -1,27 +1,32 @@
 {
-  "name": "shortin-v2",
+  "name": "shortin-api-v2",
   "version": "1.0.0",
   "description": "This is the updated version of previous shortin project. It is a URL shortener that uses Google APIs to shorten URLs and store them in a database.",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node api/index.ts",
-    "build": "tsc --outDir dist",
-    "start": "nodemon dist/api/index.js",
     "biome:format": "biome format --write",
     "biome:lint": "biome lint --write",
-    "up-latest": "pnpm up --latest"
+    "build": "tsc --outDir dist",
+    "dev": "ts-node api/index.ts",
+    "start": "nodemon dist/api/index.js",
+    "up-latest": "pnpm up --latest",
+    "sst:dev": "sst dev",
+    "sst:deploy": "sst deploy --stage production"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf",
   "dependencies": {
+    "@vendia/serverless-express": "^4.12.6",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "googleapis": "^149.0.0"
+    "googleapis": "^149.0.0",
+    "sst": "3.17.6"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@types/aws-lambda": "8.10.150",
     "@types/express": "^5.0.2",
     "@types/express-serve-static-core": "^5.0.6",
     "@types/node": "^22.15.24",
