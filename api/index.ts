@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import { generateShortCode } from "../helper/generateShortCode";
 import { rateLimiter } from "../middleware/rateLimiter";
 import type { Request, Response } from "express-serve-static-core";
-import serverlessExpress from "@vendia/serverless-express";
 
 // Load environment variables first
 
@@ -342,4 +341,4 @@ app.listen(port, () => {
 	console.log(`Server is running at http://localhost:${port}`);
 });
 
-export default serverlessExpress({ app });
+export default app;
