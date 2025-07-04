@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@vendia/serverless-express':
-        specifier: ^4.12.6
-        version: 4.12.6
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
@@ -104,10 +101,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@codegenie/serverless-express@4.16.0':
-    resolution: {integrity: sha512-TlvAHQysphN3OW6Ziz6AD2DnN9IIy/KkKNImZwMJpwGHHqLATi/9hMg8H8VBRg2L15pGt8ad3R6j6mfvHVWrCg==}
-    engines: {node: '>=18'}
-
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -176,10 +169,6 @@ packages:
 
   '@types/serve-static@1.15.7':
     resolution: {integrity: sha512-W8Ym+h8nhuRwaKPaDw34QUkwsGi6Rc4yYqvKFo5rm2FUEhCFbzVWrxXUxuKK8TASjWsysJY0nsmNCGhCOIsrOw==}
-
-  '@vendia/serverless-express@4.12.6':
-    resolution: {integrity: sha512-ePsIPk3VQwgm5nh/JGBtTKQs5ZOF7REjHxC+PKk/CHvhlKQkJuUU365uPOlxuLJhC+BAefDznDRReWxpnKjmYg==}
-    engines: {node: '>=12'}
 
   accepts@2.0.0:
     resolution: {integrity: sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==}
@@ -950,8 +939,6 @@ snapshots:
   '@biomejs/cli-win32-x64@1.9.4':
     optional: true
 
-  '@codegenie/serverless-express@4.16.0': {}
-
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
@@ -1035,10 +1022,6 @@ snapshots:
       '@types/http-errors': 2.0.4
       '@types/node': 22.15.24
       '@types/send': 0.17.4
-
-  '@vendia/serverless-express@4.12.6':
-    dependencies:
-      '@codegenie/serverless-express': 4.16.0
 
   accepts@2.0.0:
     dependencies:
