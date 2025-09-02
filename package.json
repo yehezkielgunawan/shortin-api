@@ -1,33 +1,40 @@
 {
-  "name": "shortin-api-v2",
-  "version": "1.0.0",
-  "description": "This is the updated version of previous shortin project. It is a URL shortener that uses Google APIs to shorten URLs and store them in a database.",
-  "main": "index.js",
-  "scripts": {
-    "biome:format": "biome format --write",
-    "biome:lint": "biome lint --write",
-    "build": "tsc --outDir dist",
-    "dev": "ts-node api/index.ts",
-    "start": "nodemon dist/api/index.js",
-    "up-latest": "pnpm up --latest"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf",
-  "dependencies": {
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "googleapis": "^149.0.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@types/aws-lambda": "8.10.150",
-    "@types/express": "^5.0.2",
-    "@types/express-serve-static-core": "^5.0.6",
-    "@types/node": "^22.15.24",
-    "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
-  }
+	"name": "shortin-api-v2",
+	"version": "1.0.0",
+	"description": "This is the updated version of previous shortin project. It is a URL shortener that uses Google APIs to shorten URLs and store them in a database.",
+	"main": "index.js",
+	"scripts": {
+		"biome:format": "biome format --write",
+		"biome:lint": "biome lint --write",
+		"build": "tsc --outDir dist",
+		"dev": "ts-node api/index.ts",
+		"start": "nodemon dist/api/index.js",
+		"up-latest": "pnpm up --latest",
+		"cloudflare:build": "tsc --project tsconfig.worker.json",
+		"cloudflare:preview": "pnpm cloudflare:build && wrangler dev",
+		"cloudflare:deploy": "pnpm cloudflare:build && wrangler deploy",
+		"cloudflare:deploy:ci": "pnpm cloudflare:build",
+		"cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.15.1+sha512.34e538c329b5553014ca8e8f4535997f96180a1d0f614339357449935350d924e22f8614682191264ec33d1462ac21561aff97f6bb18065351c162c7e8f6de67",
+	"dependencies": {
+		"dotenv": "^16.5.0",
+		"express": "^5.1.0",
+		"googleapis": "^149.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@cloudflare/workers-types": "^4.20250902.0",
+		"@types/aws-lambda": "8.10.150",
+		"@types/express": "^5.0.2",
+		"@types/express-serve-static-core": "^5.0.6",
+		"@types/node": "^22.15.24",
+		"nodemon": "^3.1.10",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.3",
+		"wrangler": "^4.33.1"
+	}
 }
