@@ -160,11 +160,64 @@ The API implements rate limiting to prevent abuse:
 
 ## Deployment
 
-This project can be deployed to Vercel using the included `vercel.json` configuration:
+This project supports dual deployment to both Vercel and Cloudflare Workers, allowing you to choose the platform that best fits your needs.
+
+### Vercel Deployment
+
+Deploy to Vercel using the included `vercel.json` configuration:
 
 ```bash
 vercel --prod
 ```
+
+### Cloudflare Workers Deployment
+
+This project includes a specialized setup for Cloudflare Workers deployment:
+
+#### Prerequisites
+- Cloudflare account
+- Wrangler CLI installed (`npm install -g wrangler`)
+
+#### Setup Environment Variables
+Configure your environment variables in the Cloudflare Workers dashboard or via Wrangler:
+
+```bash
+# Set each environment variable
+wrangler secret put GOOGLE_PROJECT_ID
+wrangler secret put GOOGLE_PRIVATE_KEY_ID
+wrangler secret put GOOGLE_PRIVATE_KEY
+wrangler secret put GOOGLE_CLIENT_EMAIL
+wrangler secret put GOOGLE_CLIENT_ID
+wrangler secret put GOOGLE_AUTH_URI
+wrangler secret put GOOGLE_TOKEN_URI
+wrangler secret put GOOGLE_AUTH_PROVIDER_X509_CERT_URL
+wrangler secret put GOOGLE_CLIENT_X509_CERT_URL
+wrangler secret put GOOGLE_UNIVERSE_DOMAIN
+wrangler secret put SPREADSHEET_ID
+```
+
+#### Deploy Commands
+
+```bash
+# Build and preview locally
+pnpm cloudflare:preview
+
+# Build and deploy to production
+pnpm cloudflare:deploy
+```
+
+#### CI/CD with GitHub Actions
+The project includes a GitHub Actions workflow for automated Cloudflare Workers deployment. Set up the following secrets in your GitHub repository:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- All Google Sheets API environment variables (as secrets)
+
+#### Architecture Notes
+- The same Express.js application code runs on both platforms
+- Cloudflare Workers uses a custom adapter (`worker.ts`) to bridge Express.js with the Workers runtime
+- Vercel deployment uses the traditional Node.js server approach
+- Both deployments share the same API endpoints and functionality
 
 ## License
 
