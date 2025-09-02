@@ -1,0 +1,9 @@
+{
+	"main": "dist-worker/worker.js",
+	"name": "shortin-api",
+	"compatibility_date": "2025-03-25",
+	"compatibility_flags": ["nodejs_compat"],
+	"vars": {
+		"NODE_ENV": "production"
+	}
+}
