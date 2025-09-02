@@ -1,0 +1,18 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"target": "es2022",
+		"module": "es2022",
+		"moduleResolution": "bundler",
+		"outDir": "./dist-worker",
+		"lib": ["es2022", "webworker"],
+		"types": ["@cloudflare/workers-types"],
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"noEmit": false
+	},
+	"include": ["worker.ts", "api/**/*", "helper/**/*", "middleware/**/*"],
+	"exclude": ["node_modules", "dist", "**/*.test.ts"]
+}
