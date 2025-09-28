@@ -1,39 +1,46 @@
 {
-	"name": "shortin-api-v2",
-	"version": "1.0.0",
-	"description": "This is the updated version of previous shortin project. It is a URL shortener that uses Google APIs to shorten URLs and store them in a database.",
-	"main": "index.js",
-	"scripts": {
-		"biome:format": "biome format --write",
-		"biome:lint": "biome lint --write",
-		"build": "tsc --outDir dist",
-		"dev": "ts-node api/index.ts",
-		"start": "nodemon dist/api/index.js",
-		"up-latest": "pnpm up --latest",
-		"cloudflare:build": "tsc --project tsconfig.worker.json",
-		"cloudflare:preview": "pnpm cloudflare:build && wrangler dev",
-		"cloudflare:deploy": "pnpm cloudflare:build && wrangler deploy",
-		"cloudflare:deploy:ci": "pnpm cloudflare:build",
-		"cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"packageManager": "pnpm@10.15.1+sha512.34e538c329b5553014ca8e8f4535997f96180a1d0f614339357449935350d924e22f8614682191264ec33d1462ac21561aff97f6bb18065351c162c7e8f6de67",
-	"dependencies": {
-		"dotenv": "^16.5.0",
-		"express": "^5.1.0",
-		"googleapis": "^149.0.0"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@cloudflare/workers-types": "^4.20250902.0",
-		"@types/express": "^5.0.2",
-		"@types/express-serve-static-core": "^5.0.6",
-		"@types/node": "^22.15.24",
-		"nodemon": "^3.1.10",
-		"ts-node": "^10.9.2",
-		"typescript": "^5.8.3",
-		"wrangler": "^4.33.1"
-	}
+  "name": "shortin-api-v2",
+  "version": "1.0.0",
+  "description": "This is the updated version of previous shortin project. It is a URL shortener that uses Google APIs to shorten URLs and store them in a database.",
+  "main": "index.js",
+  "scripts": {
+    "biome:format": "biome format --write",
+    "biome:lint": "biome lint --write",
+    "build": "tsc --outDir dist",
+    "dev": "ts-node api/index.ts",
+    "start": "nodemon dist/api/index.js",
+    "test": "vitest run --config ./vitest.config.ts",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "up-latest": "pnpm up --latest",
+    "cloudflare:build": "tsc --project tsconfig.worker.json",
+    "cloudflare:preview": "pnpm cloudflare:build && wrangler dev",
+    "cloudflare:deploy": "pnpm cloudflare:build && wrangler deploy",
+    "cloudflare:deploy:ci": "pnpm cloudflare:build",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.1+sha512.34e538c329b5553014ca8e8f4535997f96180a1d0f614339357449935350d924e22f8614682191264ec33d1462ac21561aff97f6bb18065351c162c7e8f6de67",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "googleapis": "^149.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@cloudflare/workers-types": "^4.20250902.0",
+    "@types/express": "^5.0.2",
+    "@types/express-serve-static-core": "^5.0.6",
+    "@types/node": "^22.15.24",
+    "@types/supertest": "^6.0.3",
+    "@vitest/coverage-v8": "3.2.4",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.33.1"
+  }
 }
