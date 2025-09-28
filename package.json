@@ -9,6 +9,9 @@
 		"build": "tsc --outDir dist",
 		"dev": "ts-node api/index.ts",
 		"start": "nodemon dist/api/index.js",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
 		"up-latest": "pnpm up --latest",
 		"cloudflare:build": "tsc --project tsconfig.worker.json",
 		"cloudflare:preview": "pnpm cloudflare:build && wrangler dev",
@@ -31,9 +34,13 @@
 		"@types/express": "^5.0.2",
 		"@types/express-serve-static-core": "^5.0.6",
 		"@types/node": "^22.15.24",
+		"@types/supertest": "^6.0.3",
+		"@vitest/coverage-v8": "3.2.4",
 		"nodemon": "^3.1.10",
+		"supertest": "^7.1.4",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.8.3",
+		"vitest": "^3.2.4",
 		"wrangler": "^4.33.1"
 	}
 }
