@@ -6,3 +6,5 @@ dist-worker
 
 # sst
 .sst
+
+coverage
