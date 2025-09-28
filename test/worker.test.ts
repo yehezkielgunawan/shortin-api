@@ -100,7 +100,8 @@ let mockStore: any;
 beforeAll(async () => {
   const mod = await import("googleapis");
   mockStore = (mod as any).__mockStore;
-  worker = (await import("../worker"))?.default ?? (await import("../worker.ts")).default;
+  // Vitest/Vite resolves TS by path during tests; for build we avoid .ts suffix
+  worker = (await import("../worker")).default;
 });
 
 beforeEach(() => {

@@ -8,5 +8,13 @@
 		"skipLibCheck": true,
 		"outDir": "dist"
 	},
-	"exclude": ["sst.config.ts"]
+	"include": ["api/**/*", "helper/**/*", "middleware/**/*", "worker.ts"],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"dist-worker",
+		"test",
+		"**/*.test.ts",
+		"sst.config.ts"
+	]
 }
