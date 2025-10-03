@@ -30,21 +30,31 @@ jobs:
 
       - name: Create secrets file
         run: |
-          cat > .secrets.json << EOF
-          {
-            "SPREADSHEET_ID": "${{ secrets.SPREADSHEET_ID }}",
-            "GOOGLE_PROJECT_ID": "${{ secrets.GOOGLE_PROJECT_ID }}",
-            "GOOGLE_PRIVATE_KEY_ID": "${{ secrets.GOOGLE_PRIVATE_KEY_ID }}",
-            "GOOGLE_PRIVATE_KEY": "${{ secrets.GOOGLE_PRIVATE_KEY }}",
-            "GOOGLE_CLIENT_EMAIL": "${{ secrets.GOOGLE_CLIENT_EMAIL }}",
-            "GOOGLE_CLIENT_ID": "${{ secrets.GOOGLE_CLIENT_ID }}",
-            "GOOGLE_AUTH_URI": "${{ secrets.GOOGLE_AUTH_URI }}",
-            "GOOGLE_TOKEN_URI": "${{ secrets.GOOGLE_TOKEN_URI }}",
-            "GOOGLE_AUTH_PROVIDER_X509_CERT_URL": "${{ secrets.GOOGLE_AUTH_PROVIDER_X509_CERT_URL }}",
-            "GOOGLE_CLIENT_X509_CERT_URL": "${{ secrets.GOOGLE_CLIENT_X509_CERT_URL }}",
-            "GOOGLE_UNIVERSE_DOMAIN": "${{ secrets.GOOGLE_UNIVERSE_DOMAIN }}"
-          }
-          EOF
+          jq -n \
+            --arg spreadsheet_id "${{ secrets.SPREADSHEET_ID }}" \
+            --arg project_id "${{ secrets.GOOGLE_PROJECT_ID }}" \
+            --arg private_key_id "${{ secrets.GOOGLE_PRIVATE_KEY_ID }}" \
+            --arg private_key "${{ secrets.GOOGLE_PRIVATE_KEY }}" \
+            --arg client_email "${{ secrets.GOOGLE_CLIENT_EMAIL }}" \
+            --arg client_id "${{ secrets.GOOGLE_CLIENT_ID }}" \
+            --arg auth_uri "${{ secrets.GOOGLE_AUTH_URI }}" \
+            --arg token_uri "${{ secrets.GOOGLE_TOKEN_URI }}" \
+            --arg auth_provider_cert "${{ secrets.GOOGLE_AUTH_PROVIDER_X509_CERT_URL }}" \
+            --arg client_cert "${{ secrets.GOOGLE_CLIENT_X509_CERT_URL }}" \
+            --arg universe_domain "${{ secrets.GOOGLE_UNIVERSE_DOMAIN }}" \
+            '{
+              SPREADSHEET_ID: $spreadsheet_id,
+              GOOGLE_PROJECT_ID: $project_id,
+              GOOGLE_PRIVATE_KEY_ID: $private_key_id,
+              GOOGLE_PRIVATE_KEY: $private_key,
+              GOOGLE_CLIENT_EMAIL: $client_email,
+              GOOGLE_CLIENT_ID: $client_id,
+              GOOGLE_AUTH_URI: $auth_uri,
+              GOOGLE_TOKEN_URI: $token_uri,
+              GOOGLE_AUTH_PROVIDER_X509_CERT_URL: $auth_provider_cert,
+              GOOGLE_CLIENT_X509_CERT_URL: $client_cert,
+              GOOGLE_UNIVERSE_DOMAIN: $universe_domain
+            }' > .secrets.json
 
       - name: Upload secrets to Cloudflare
         run: |
