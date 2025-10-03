@@ -33,13 +33,17 @@ vi.mock("googleapis", () => {
       if (countMatch) {
         const idx = Number(countMatch[1]) - 1;
         const sc = store.shortCodes[idx];
-        const count = sc && store.countByShortCode.has(sc) ? store.countByShortCode.get(sc) : 0;
+        const count =
+          sc && store.countByShortCode.has(sc)
+            ? store.countByShortCode.get(sc)
+            : 0;
         return { data: { values: [[count ?? 0]] } };
       }
       return { data: { values: [] } };
     }),
     append: vi.fn(async ({ requestBody }: any) => {
-      const [id, url, shortCode, createdAt, updatedAt, count] = requestBody.values[0];
+      const [id, url, shortCode, createdAt, updatedAt, count] =
+        requestBody.values[0];
       store.shortCodes.push(shortCode);
       store.urlByShortCode.set(shortCode, url);
       store.countByShortCode.set(shortCode, count ?? 0);
@@ -114,6 +118,19 @@ beforeEach(() => {
 describe("Worker fetch", () => {
   const env = {
     SPREADSHEET_ID: "TEST",
+    GOOGLE_PROJECT_ID: "test-project-id",
+    GOOGLE_PRIVATE_KEY_ID: "test-private-key-id",
+    GOOGLE_PRIVATE_KEY:
+      "-----BEGIN PRIVATE KEY-----\ntest\n-----END PRIVATE KEY-----",
+    GOOGLE_CLIENT_EMAIL: "test@test-project.iam.gserviceaccount.com",
+    GOOGLE_CLIENT_ID: "123456789",
+    GOOGLE_AUTH_URI: "https://accounts.google.com/o/oauth2/auth",
+    GOOGLE_TOKEN_URI: "https://oauth2.googleapis.com/token",
+    GOOGLE_AUTH_PROVIDER_X509_CERT_URL:
+      "https://www.googleapis.com/oauth2/v1/certs",
+    GOOGLE_CLIENT_X509_CERT_URL:
+      "https://www.googleapis.com/robot/v1/metadata/x509/test%40test-project.iam.gserviceaccount.com",
+    GOOGLE_UNIVERSE_DOMAIN: "googleapis.com",
   } as any;
 
   it("GET / returns welcome text", async () => {
@@ -139,7 +156,10 @@ describe("Worker fetch", () => {
     expect(typeof record.shortCode).toBe("string");
 
     // get
-    const get = await worker.fetch(new Request(`http://test/${record.shortCode}`), env);
+    const get = await worker.fetch(
+      new Request(`http://test/${record.shortCode}`),
+      env,
+    );
     expect(get.status).toBe(200);
     expect(await get.json()).toEqual({ url: "https://ex.com/a" });
 
@@ -173,7 +193,9 @@ describe("Worker fetch", () => {
 
     // delete
     const del = await worker.fetch(
-      new Request(`http://test/shorten/${record.shortCode}`, { method: "DELETE" }),
+      new Request(`http://test/shorten/${record.shortCode}`, {
+        method: "DELETE",
+      }),
       env,
     );
     expect(del.status).toBe(200);
@@ -187,7 +209,10 @@ describe("Worker fetch", () => {
   });
 
   it("returns 404 for unknown path", async () => {
-    const res = await worker.fetch(new Request("http://test/unknown/path"), env);
+    const res = await worker.fetch(
+      new Request("http://test/unknown/path"),
+      env,
+    );
     expect(res.status).toBe(404);
   });
 
