@@ -28,45 +28,6 @@ jobs:
       - name: Build for Cloudflare
         run: pnpm cloudflare:deploy:ci
 
-      - name: Create secrets file
-        run: |
-          jq -n \
-            --arg spreadsheet_id "${{ secrets.SPREADSHEET_ID }}" \
-            --arg project_id "${{ secrets.GOOGLE_PROJECT_ID }}" \
-            --arg private_key_id "${{ secrets.GOOGLE_PRIVATE_KEY_ID }}" \
-            --arg private_key "${{ secrets.GOOGLE_PRIVATE_KEY }}" \
-            --arg client_email "${{ secrets.GOOGLE_CLIENT_EMAIL }}" \
-            --arg client_id "${{ secrets.GOOGLE_CLIENT_ID }}" \
-            --arg auth_uri "${{ secrets.GOOGLE_AUTH_URI }}" \
-            --arg token_uri "${{ secrets.GOOGLE_TOKEN_URI }}" \
-            --arg auth_provider_cert "${{ secrets.GOOGLE_AUTH_PROVIDER_X509_CERT_URL }}" \
-            --arg client_cert "${{ secrets.GOOGLE_CLIENT_X509_CERT_URL }}" \
-            --arg universe_domain "${{ secrets.GOOGLE_UNIVERSE_DOMAIN }}" \
-            '{
-              SPREADSHEET_ID: $spreadsheet_id,
-              GOOGLE_PROJECT_ID: $project_id,
-              GOOGLE_PRIVATE_KEY_ID: $private_key_id,
-              GOOGLE_PRIVATE_KEY: $private_key,
-              GOOGLE_CLIENT_EMAIL: $client_email,
-              GOOGLE_CLIENT_ID: $client_id,
-              GOOGLE_AUTH_URI: $auth_uri,
-              GOOGLE_TOKEN_URI: $token_uri,
-              GOOGLE_AUTH_PROVIDER_X509_CERT_URL: $auth_provider_cert,
-              GOOGLE_CLIENT_X509_CERT_URL: $client_cert,
-              GOOGLE_UNIVERSE_DOMAIN: $universe_domain
-            }' > .secrets.json
-
-      - name: Upload secrets to Cloudflare
-        run: |
-          npx wrangler secret bulk .secrets.json
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
-      - name: Clean up secrets file
-        if: always()
-        run: rm -f .secrets.json
-
       - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
