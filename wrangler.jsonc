@@ -5,5 +5,26 @@
 	"compatibility_flags": ["nodejs_compat"],
 	"vars": {
 		"NODE_ENV": "production"
+	},
+	// Environment variables (secrets) that need to be configured in Cloudflare Dashboard:
+	// - SPREADSHEET_ID
+	// - GOOGLE_PROJECT_ID
+	// - GOOGLE_PRIVATE_KEY_ID
+	// - GOOGLE_PRIVATE_KEY (with actual newlines, not escaped)
+	// - GOOGLE_CLIENT_EMAIL
+	// - GOOGLE_CLIENT_ID
+	// - GOOGLE_AUTH_URI (optional)
+	// - GOOGLE_TOKEN_URI (optional)
+	// - GOOGLE_AUTH_PROVIDER_X509_CERT_URL (optional)
+	// - GOOGLE_CLIENT_X509_CERT_URL (optional)
+	// - GOOGLE_UNIVERSE_DOMAIN (optional)
+	//
+	// These are configured via: Cloudflare Dashboard → Workers & Pages → shortin-api → Settings → Variables
+	// Or via: wrangler secret put <KEY_NAME>
+	"observability": {
+		"enabled": true,
+		"logs": {
+			"enabled": true
+		}
 	}
 }
