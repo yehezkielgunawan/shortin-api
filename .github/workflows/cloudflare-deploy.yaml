@@ -1,5 +1,12 @@
 name: Deploy to Cloudflare Workers
 
+# Note: Environment variables (secrets) are managed via Cloudflare Dashboard
+# Go to: Cloudflare Dashboard → Workers & Pages → shortin-api → Settings → Variables
+# Required secrets: SPREADSHEET_ID, GOOGLE_PROJECT_ID, GOOGLE_PRIVATE_KEY_ID,
+# GOOGLE_PRIVATE_KEY, GOOGLE_CLIENT_EMAIL, GOOGLE_CLIENT_ID
+# Optional: GOOGLE_AUTH_URI, GOOGLE_TOKEN_URI, GOOGLE_AUTH_PROVIDER_X509_CERT_URL,
+# GOOGLE_CLIENT_X509_CERT_URL, GOOGLE_UNIVERSE_DOMAIN
+
 on:
   workflow_dispatch:
 
@@ -27,6 +34,16 @@ jobs:
 
       - name: Build for Cloudflare
         run: pnpm cloudflare:deploy:ci
+
+      - name: Verify secrets exist in Cloudflare
+        run: |
+          echo "Verifying required secrets are configured in Cloudflare..."
+          npx wrangler secret list
+          echo "✅ If you see the required secrets listed above, deployment will proceed."
+          echo "⚠️  Note: Secrets configured in Cloudflare Dashboard persist across deployments."
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3

@@ -172,29 +172,57 @@ vercel --prod
 
 ### Cloudflare Workers Deployment
 
-This project includes a specialized setup for Cloudflare Workers deployment:
+This project includes a specialized setup for Cloudflare Workers deployment.
+
+📚 **Quick Links:**
+- 📋 [Complete Setup Checklist](CLOUDFLARE_SETUP.md) - Step-by-step deployment guide
+- 🔑 [Environment Variables Reference](ENV_VARS_REFERENCE.md) - How secrets persist across deployments
 
 #### Prerequisites
 - Cloudflare account
 - Wrangler CLI installed (`npm install -g wrangler`)
 
 #### Setup Environment Variables
-Configure your environment variables in the Cloudflare Workers dashboard or via Wrangler:
+
+**Recommended Method: Cloudflare Dashboard**
+
+Configure your environment variables via the Cloudflare Dashboard (easiest for managing secrets with special characters like multiline private keys):
+
+1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. Navigate to **Workers & Pages** → **shortin-api** → **Settings** → **Variables**
+3. Add the following environment variables as **secrets** (encrypted):
+
+**Required:**
+- `SPREADSHEET_ID` - Your Google Sheet ID
+- `GOOGLE_PROJECT_ID` - Your Google Cloud project ID
+- `GOOGLE_PRIVATE_KEY_ID` - Private key ID from service account
+- `GOOGLE_PRIVATE_KEY` - Full private key (including BEGIN/END markers and newlines)
+- `GOOGLE_CLIENT_EMAIL` - Service account email
+- `GOOGLE_CLIENT_ID` - Client ID from service account
+
+**Optional (will use defaults if not provided):**
+- `GOOGLE_AUTH_URI`
+- `GOOGLE_TOKEN_URI`
+- `GOOGLE_AUTH_PROVIDER_X509_CERT_URL`
+- `GOOGLE_CLIENT_X509_CERT_URL`
+- `GOOGLE_UNIVERSE_DOMAIN`
+
+**Alternative Method: Wrangler CLI**
+
+You can also set secrets via command line if preferred:
 
 ```bash
-# Set each environment variable
+# Set each environment variable (you'll be prompted to enter the value)
+wrangler secret put SPREADSHEET_ID
 wrangler secret put GOOGLE_PROJECT_ID
 wrangler secret put GOOGLE_PRIVATE_KEY_ID
 wrangler secret put GOOGLE_PRIVATE_KEY
 wrangler secret put GOOGLE_CLIENT_EMAIL
 wrangler secret put GOOGLE_CLIENT_ID
-wrangler secret put GOOGLE_AUTH_URI
-wrangler secret put GOOGLE_TOKEN_URI
-wrangler secret put GOOGLE_AUTH_PROVIDER_X509_CERT_URL
-wrangler secret put GOOGLE_CLIENT_X509_CERT_URL
-wrangler secret put GOOGLE_UNIVERSE_DOMAIN
-wrangler secret put SPREADSHEET_ID
+# ... etc
 ```
+
+**Note:** The dashboard method is recommended for `GOOGLE_PRIVATE_KEY` as it handles multiline content better.
 
 #### Deploy Commands
 
@@ -207,11 +235,13 @@ pnpm cloudflare:deploy
 ```
 
 #### CI/CD with GitHub Actions
-The project includes a GitHub Actions workflow for automated Cloudflare Workers deployment. Set up the following secrets in your GitHub repository:
+The project includes a GitHub Actions workflow for automated Cloudflare Workers deployment.
 
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
-- All Google Sheets API environment variables (as secrets)
+**Required GitHub Secrets:**
+- `CLOUDFLARE_API_TOKEN` - Your Cloudflare API token
+- `CLOUDFLARE_ACCOUNT_ID` - Your Cloudflare account ID
+
+**Important:** Environment variables for the Worker (Google credentials, etc.) should be configured directly in the Cloudflare Dashboard as described above, not in GitHub Secrets. The GitHub Action only deploys the code; the environment variables are managed separately in Cloudflare.
 
 #### Architecture Notes
 - The same Express.js application code runs on both platforms
