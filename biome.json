@@ -1,6 +1,8 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
-	"files": { "ignoreUnknown": false },
+	"files": {
+		"ignoreUnknown": false
+	},
 	"assist": {
 		"actions": {
 			"source": {
@@ -68,8 +70,20 @@
 	},
 	"overrides": [
 		{
-			"includes": ["dist/**/*.js"],
+			"includes": ["coverage/**"],
 			"linter": {
+				"enabled": false
+			},
+			"formatter": {
+				"enabled": false
+			}
+		},
+		{
+			"includes": ["dist/**"],
+			"linter": {
+				"enabled": false
+			},
+			"formatter": {
 				"enabled": false
 			}
 		}
