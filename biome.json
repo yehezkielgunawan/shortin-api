@@ -34,6 +34,14 @@
 				"noUnusedVariables": {
 					"level": "warn",
 					"fix": "none"
+				},
+				"noUnusedFunctionParameters": {
+					"level": "off"
+				}
+			},
+			"suspicious": {
+				"noExplicitAny": {
+					"level": "off"
 				}
 			},
 			"style": {
@@ -70,6 +78,12 @@
 	},
 	"overrides": [
 		{
+			"includes": ["cloudflare-env.d.ts"],
+			"linter": {
+				"enabled": false
+			}
+		},
+		{
 			"includes": ["coverage/**"],
 			"linter": {
 				"enabled": false
@@ -85,6 +99,27 @@
 			},
 			"formatter": {
 				"enabled": false
+			}
+		},
+		{
+			"includes": ["dist-worker/**"],
+			"linter": {
+				"enabled": false
+			},
+			"formatter": {
+				"enabled": false
+			}
+		},
+		{
+			"includes": ["test/**"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedVariables": {
+							"level": "off"
+						}
+					}
+				}
 			}
 		}
 	]
