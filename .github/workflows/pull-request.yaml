@@ -1,5 +1,3 @@
-# run build and unit test every PR to main branch
-
 name: Pull Request CI
 on:
   pull_request:
@@ -24,7 +22,5 @@ jobs:
           cache: "pnpm"
       - name: Install Deps (immutable)
         run: pnpm install --frozen-lockfile
-      - name: Build
-        run: pnpm build
-      - name: Run Unit Tests
-        run: pnpm test:coverage
+      - name: Check Worker
+        run: pnpm check
