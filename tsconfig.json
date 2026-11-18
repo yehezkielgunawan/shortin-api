@@ -1,20 +1,15 @@
 {
 	"compilerOptions": {
-		"target": "es2016",
-		"module": "commonjs",
+		"target": "es2022",
+		"module": "es2022",
+		"moduleResolution": "bundler",
+		"lib": ["es2022", "webworker"],
+		"types": ["@cloudflare/workers-types", "node"],
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
 		"skipLibCheck": true,
-		"outDir": "dist"
+		"noEmit": true
 	},
-	"include": ["api/**/*", "helper/**/*", "middleware/**/*", "worker.ts"],
-	"exclude": [
-		"node_modules",
-		"dist",
-		"dist-worker",
-		"test",
-		"**/*.test.ts",
-		"sst.config.ts"
-	]
+	"include": ["worker.ts", "helper/**/*.ts", "test/**/*.ts", "vitest.config.ts"]
 }

@@ -1,5 +1,6 @@
 {
-	"main": "dist-worker/worker.js",
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"main": "worker.ts",
 	"name": "shortin-api",
 	"compatibility_date": "2025-03-25",
 	"compatibility_flags": ["nodejs_compat"],

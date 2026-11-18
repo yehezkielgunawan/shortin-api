@@ -4,24 +4,13 @@ export default defineConfig({
 	test: {
 		environment: "node",
 		include: ["test/**/*.test.ts"],
-		exclude: ["node_modules/**", "dist/**", "coverage/**", "dist-workers/**"],
-		setupFiles: ["./vitest.setup.ts"],
+		env: {
+			CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV: "false",
+			WRANGLER_SEND_METRICS: "false",
+		},
 		coverage: {
 			reporter: ["text", "json", "html"],
-			all: true,
-			include: [
-				"api/**/*.ts",
-				"helper/**/*.ts",
-				"middleware/**/*.ts",
-				"worker.ts",
-			],
-			exclude: [
-				"test/**",
-				"**/*.test.ts",
-				"vitest.config.ts",
-				"vitest.setup.ts",
-				"api/index.ts",
-			],
+			include: ["helper/**/*.ts", "worker.ts"],
 		},
 	},
 });
