@@ -36,11 +36,8 @@ jobs:
         run: pnpm check
 
       - name: Verify secrets exist in Cloudflare
-        run: |
-          echo "Verifying required secrets are configured in Cloudflare..."
-          npx wrangler secret list
-          echo "✅ If you see the required secrets listed above, deployment will proceed."
-          echo "⚠️  Note: Secrets configured in Cloudflare Dashboard persist across deployments."
+        shell: bash
+        run: pnpm exec wrangler secret list --name shortin-api --format json | node scripts/check-worker-secrets.mjs
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
