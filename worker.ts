@@ -13,7 +13,7 @@ interface Env {
 	SPREADSHEET_ID?: string;
 }
 
-// Simple Express to Workers adapter
+// Worker entry point
 export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
 		try {
@@ -62,7 +62,7 @@ export default {
 				}
 			}
 
-			// Create a simple mock request object with essential Express properties
+			// Normalize the request for the route handlers.
 			const mockReq = {
 				method: method.toUpperCase(),
 				url: url.pathname + url.search,
@@ -82,8 +82,8 @@ export default {
 				},
 			};
 
-			// Promise to capture the Express response
-			return new Promise<Response>((resolve, reject) => {
+			// Resolve when the route handler finishes writing the response.
+			return new Promise<Response>((resolve) => {
 				let statusCode = 200;
 				const responseHeaders: Record<string, string> = {};
 				let responseBody = "";
@@ -172,19 +172,19 @@ export default {
 					} else {
 						mockRes.status(404).json({ error: "Not Found" });
 					}
-				} catch (error) {
-					console.error("Handler error:", error);
+				} catch {
+					console.error({ event: "worker_request_failed", operation: "route" });
 					mockRes.status(500).json({ error: "Internal Server Error" });
 				}
 			});
-		} catch (error) {
-			console.error("Worker error:", error);
+		} catch {
+			console.error({ event: "worker_request_failed", operation: "fetch" });
 			return new Response("Internal Server Error", { status: 500 });
 		}
 	},
 };
 
-// Handler functions (simplified versions of the Express route handlers)
+// Route handlers
 async function handleShortenPost(req: any, res: any) {
 	const { url, shortCodeInput } = req.body || {};
 
@@ -281,8 +281,8 @@ async function handleShortenPost(req: any, res: any) {
 		});
 
 		res.status(201).json(record);
-	} catch (error) {
-		console.error("Error details:", error);
+	} catch {
+		console.error({ event: "sheets_operation_failed", operation: "create" });
 		res.status(500).json({ error: "Failed to create short URL" });
 	}
 }
@@ -355,8 +355,8 @@ async function handleShortenDelete(req: any, res: any) {
 		});
 
 		res.status(200).json({ message: "Short code deleted successfully" });
-	} catch (error) {
-		console.error("Error details:", error);
+	} catch {
+		console.error({ event: "sheets_operation_failed", operation: "delete" });
 		res.status(500).json({ error: "Failed to delete short URL" });
 	}
 }
@@ -434,8 +434,8 @@ async function handleShortenPut(req: any, res: any) {
 		});
 
 		res.status(200).json({ message: "Short code updated successfully" });
-	} catch (error) {
-		console.error("Error details:", error);
+	} catch {
+		console.error({ event: "sheets_operation_failed", operation: "update" });
 		res.status(500).json({ error: "Failed to update short URL" });
 	}
 }
@@ -526,8 +526,8 @@ async function handleShortCodeGet(req: any, res: any) {
 		});
 
 		res.status(200).json({ url });
-	} catch (error) {
-		console.error("Error details:", error);
+	} catch {
+		console.error({ event: "sheets_operation_failed", operation: "lookup" });
 		res.status(500).json({ error: "Failed to retrieve short URL" });
 	}
 }
@@ -602,8 +602,8 @@ async function handleShortenStats(req: any, res: any) {
 		const count = countResponse.data.values?.[0]?.[0];
 
 		res.status(200).json({ count });
-	} catch (error) {
-		console.error("Error details:", error);
+	} catch {
+		console.error({ event: "sheets_operation_failed", operation: "stats" });
 		res.status(500).json({ error: "Failed to retrieve short URL stats" });
 	}
 }

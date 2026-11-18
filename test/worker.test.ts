@@ -136,4 +136,24 @@ describe("Worker API contract", () => {
 		}
 	});
 
+	it("does not expose upstream update error details in responses or logs", async () => {
+		const marker = "dummy-sensitive-marker";
+		fixture.rows.push(["id", "https://example.test/", "alias", "d", "e", 0]);
+		fixture.values.update.mockRejectedValueOnce(new Error(marker));
+		const log = vi.spyOn(console, "error").mockImplementation(() => {});
+		try {
+			await expectResponse(
+				await request("/shorten/alias", "PUT", {
+					url: "https://example.test/new",
+				}),
+				500,
+				{ error: "Failed to update short URL" },
+			);
+			expect(log.mock.calls).toEqual([
+				[{ event: "sheets_operation_failed", operation: "update" }],
+			]);
+		} finally {
+			log.mockRestore();
+		}
+	});
 });
