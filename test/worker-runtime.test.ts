@@ -8,6 +8,7 @@ const dummyBindings = {
 	GOOGLE_PRIVATE_KEY: "test-key",
 	GOOGLE_CLIENT_EMAIL: "service@example.test",
 	GOOGLE_CLIENT_ID: "test-client-id",
+	SHORTIN_ADMIN_TOKEN: "runtime-test-token",
 } satisfies Record<string, string>;
 
 describe("Worker runtime", () => {
@@ -33,6 +34,16 @@ describe("Worker runtime", () => {
 			expect(response.status).toBe(status);
 			if (status === 200) {
 				expect(await response.text()).toBe("Welcome to the URL Shortener API!");
+				const denied = await worker.fetch("/shorten/example", {
+					method: "DELETE",
+					headers: { authorization: "Bearer wrong-token" },
+				});
+				expect(denied.status).toBe(401);
+				const authorized = await worker.fetch("/shorten/example", {
+					method: "PUT",
+					headers: { authorization: "Bearer runtime-test-token" },
+				});
+				expect(authorized.status).toBe(400);
 			} else {
 				expect(await response.json()).toEqual({
 					error:

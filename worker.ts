@@ -1,3 +1,6 @@
+import { createHash, timingSafeEqual } from "node:crypto";
+import { isExpired, parseUtcTimestamp } from "./helper/linkAge.mjs";
+
 // Types for Cloudflare Workers
 interface Env {
 	GOOGLE_PROJECT_ID?: string;
@@ -11,12 +14,45 @@ interface Env {
 	GOOGLE_CLIENT_X509_CERT_URL?: string;
 	GOOGLE_UNIVERSE_DOMAIN?: string;
 	SPREADSHEET_ID?: string;
+	SHORTIN_ADMIN_TOKEN?: string;
+	LINK_LIFECYCLE_ROLLOUT_AT?: string;
+}
+
+function isAdmin(request: Request, token: string | undefined): boolean {
+	const supplied = /^Bearer ([^\s,]+)$/i.exec(
+		request.headers.get("authorization") ?? "",
+	)?.[1];
+	if (!token || !supplied) return false;
+	const digest = (value: string) => createHash("sha256").update(value).digest();
+	return timingSafeEqual(digest(supplied), digest(token));
 }
 
 // Worker entry point
 export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
 		try {
+			const url = new URL(request.url);
+			const method = request.method.toLowerCase();
+			const { SHORTIN_ADMIN_TOKEN, LINK_LIFECYCLE_ROLLOUT_AT, ...sheetsEnv } =
+				env;
+			if (
+				url.pathname.startsWith("/shorten/") &&
+				(method === "put" || method === "delete") &&
+				!isAdmin(request, SHORTIN_ADMIN_TOKEN)
+			) {
+				return Response.json(
+					{ error: "Unauthorized" },
+					{ status: 401, headers: { "www-authenticate": "Bearer" } },
+				);
+			}
+			const rolloutAt = parseUtcTimestamp(LINK_LIFECYCLE_ROLLOUT_AT);
+			if (LINK_LIFECYCLE_ROLLOUT_AT && rolloutAt === null) {
+				console.error({ event: "invalid_link_lifecycle_rollout" });
+				return Response.json(
+					{ error: "Server configuration error" },
+					{ status: 500 },
+				);
+			}
 			// Validate required environment variables
 			const requiredEnvVars = [
 				"GOOGLE_PROJECT_ID",
@@ -42,12 +78,9 @@ export default {
 			}
 
 			// Set environment variables from Cloudflare Workers env
-			Object.entries(env).forEach(([key, value]) => {
+			Object.entries(sheetsEnv).forEach(([key, value]) => {
 				if (value) process.env[key] = value;
 			});
-
-			const url = new URL(request.url);
-			const method = request.method.toLowerCase();
 
 			// Get request body for POST/PUT/PATCH requests
 			let body = null;
@@ -156,7 +189,7 @@ export default {
 					) {
 						const shortCode = mockReq.path.split("/")[2];
 						mockReq.params = { shortCodeInput: shortCode };
-						handleShortenPut(mockReq, mockRes);
+						handleShortenPut(mockReq, mockRes, rolloutAt);
 					} else if (
 						mockReq.path.endsWith("/stats") &&
 						mockReq.method === "GET"
@@ -168,7 +201,7 @@ export default {
 					} else if (mockReq.path !== "/" && mockReq.method === "GET") {
 						const shortCode = mockReq.path.substring(1); // Remove leading slash
 						mockReq.params = { shortCodeInput: shortCode };
-						handleShortCodeGet(mockReq, mockRes);
+						handleShortCodeGet(mockReq, mockRes, rolloutAt);
 					} else {
 						mockRes.status(404).json({ error: "Not Found" });
 					}
@@ -361,7 +394,7 @@ async function handleShortenDelete(req: any, res: any) {
 	}
 }
 
-async function handleShortenPut(req: any, res: any) {
+async function handleShortenPut(req: any, res: any, rolloutAt: number | null) {
 	const { shortCodeInput } = req.params;
 	const { url } = req.body || {};
 
@@ -408,20 +441,17 @@ async function handleShortenPut(req: any, res: any) {
 
 		const sheet = google.sheets({ auth: GAuth, version: "v4" });
 		const spreadsheetId = process.env.SPREADSHEET_ID || "";
-		const range = "Sheet1!C:C";
-
 		const response = await sheet.spreadsheets.values.get({
 			spreadsheetId,
-			range,
+			range: "Sheet1!C:D",
 		});
-
-		const existingShortCodes = response.data.values?.flat() || [];
-
-		if (!existingShortCodes.includes(shortCodeInput)) {
+		const rows = response.data.values ?? [];
+		const index = rows.findIndex((row) => row[0] === shortCodeInput);
+		if (index < 0 || isExpired(rows[index][1], rolloutAt, Date.now())) {
 			return res.status(404).json({ error: "Short code not found" });
 		}
 
-		const rowIndex = existingShortCodes.indexOf(shortCodeInput) + 1;
+		const rowIndex = index + 1;
 		const updateRange = `Sheet1!B${rowIndex}`;
 
 		await sheet.spreadsheets.values.update({
@@ -440,7 +470,11 @@ async function handleShortenPut(req: any, res: any) {
 	}
 }
 
-async function handleShortCodeGet(req: any, res: any) {
+async function handleShortCodeGet(
+	req: any,
+	res: any,
+	rolloutAt: number | null,
+) {
 	const { shortCodeInput } = req.params;
 
 	if (!shortCodeInput) {
@@ -486,20 +520,17 @@ async function handleShortCodeGet(req: any, res: any) {
 
 		const sheet = google.sheets({ auth: GAuth, version: "v4" });
 		const spreadsheetId = process.env.SPREADSHEET_ID || "";
-		const range = "Sheet1!C:C";
-
 		const response = await sheet.spreadsheets.values.get({
 			spreadsheetId,
-			range,
+			range: "Sheet1!C:D",
 		});
-
-		const existingShortCodes = response.data.values?.flat() || [];
-
-		if (!existingShortCodes.includes(shortCodeInput)) {
+		const rows = response.data.values ?? [];
+		const index = rows.findIndex((row) => row[0] === shortCodeInput);
+		if (index < 0 || isExpired(rows[index][1], rolloutAt, Date.now())) {
 			return res.status(404).json({ error: "Short code not found" });
 		}
 
-		const rowIndex = existingShortCodes.indexOf(shortCodeInput) + 1;
+		const rowIndex = index + 1;
 		const urlRange = `Sheet1!B${rowIndex}`;
 		const countRange = `Sheet1!F${rowIndex}`;
 

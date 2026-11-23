@@ -8,6 +8,7 @@ const names = [
 	"GOOGLE_CLIENT_EMAIL",
 	"GOOGLE_CLIENT_ID",
 	"SPREADSHEET_ID",
+	"SHORTIN_ADMIN_TOKEN",
 ];
 
 function check(input: string) {

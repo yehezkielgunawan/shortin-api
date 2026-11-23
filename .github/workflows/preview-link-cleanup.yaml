@@ -1,0 +1,31 @@
+name: Preview expired link cleanup
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: link-cleanup-preview
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Preview eligible links (read only)
+        run: pnpm cleanup:preview
+        env:
+          LINK_LIFECYCLE_ROLLOUT_AT: ${{ vars.LINK_LIFECYCLE_ROLLOUT_AT }}
+          SHORTIN_PREVIEW_SPREADSHEET_ID: ${{ secrets.SHORTIN_PREVIEW_SPREADSHEET_ID }}
+          SHORTIN_PREVIEW_GOOGLE_CLIENT_EMAIL: ${{ secrets.SHORTIN_PREVIEW_GOOGLE_CLIENT_EMAIL }}
+          SHORTIN_PREVIEW_GOOGLE_PRIVATE_KEY: ${{ secrets.SHORTIN_PREVIEW_GOOGLE_PRIVATE_KEY }}
