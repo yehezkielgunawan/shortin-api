@@ -8,6 +8,11 @@ export function createSheetsFake() {
 		if (range === "Sheet1!C:C") {
 			return { data: { values: rows.map((row) => [row[2] ?? ""]) } };
 		}
+		if (range === "Sheet1!C:D") {
+			return {
+				data: { values: rows.map((row) => [row[2] ?? "", row[3] ?? ""]) },
+			};
+		}
 		const match = /^Sheet1!([BF])(\d+)$/.exec(range);
 		if (!match) throw new Error(`Unexpected read range: ${range}`);
 		const cell = rows[Number(match[2]) - 1]?.[match[1] === "B" ? 1 : 5];

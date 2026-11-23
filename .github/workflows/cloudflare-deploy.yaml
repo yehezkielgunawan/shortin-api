@@ -3,7 +3,7 @@ name: Deploy to Cloudflare Workers
 # Note: Environment variables (secrets) are managed via Cloudflare Dashboard
 # Go to: Cloudflare Dashboard → Workers & Pages → shortin-api → Settings → Variables
 # Required secrets: SPREADSHEET_ID, GOOGLE_PROJECT_ID, GOOGLE_PRIVATE_KEY_ID,
-# GOOGLE_PRIVATE_KEY, GOOGLE_CLIENT_EMAIL, GOOGLE_CLIENT_ID
+# GOOGLE_PRIVATE_KEY, GOOGLE_CLIENT_EMAIL, GOOGLE_CLIENT_ID, SHORTIN_ADMIN_TOKEN
 # Optional: GOOGLE_AUTH_URI, GOOGLE_TOKEN_URI, GOOGLE_AUTH_PROVIDER_X509_CERT_URL,
 # GOOGLE_CLIENT_X509_CERT_URL, GOOGLE_UNIVERSE_DOMAIN
 

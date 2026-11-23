@@ -6,9 +6,14 @@ const original = "https://example.test/smoke/original";
 const updated = "https://example.test/smoke/updated";
 
 async function request(path, status, method = "GET", body) {
+	const headers = new Headers();
+	if (body) headers.set("content-type", "application/json");
+	if (method === "PUT" || method === "DELETE") {
+		headers.set("authorization", `Bearer ${process.env.SHORTIN_ADMIN_TOKEN}`);
+	}
 	const response = await fetch(`${baseUrl}${path}`, {
 		method,
-		headers: body ? { "content-type": "application/json" } : undefined,
+		headers,
 		body: JSON.stringify(body),
 		signal: AbortSignal.timeout(15_000),
 		redirect: "error",
@@ -18,6 +23,7 @@ async function request(path, status, method = "GET", body) {
 }
 
 async function smoke() {
+	assert.ok(process.env.SHORTIN_ADMIN_TOKEN, "Set SHORTIN_ADMIN_TOKEN first");
 	const welcome = await request("/", 200);
 	assert.equal(await welcome.text(), "Welcome to the URL Shortener API!");
 

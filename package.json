@@ -13,7 +13,8 @@
 		"cloudflare:build": "tsc --noEmit",
 		"cloudflare:preview": "pnpm dev",
 		"cloudflare:deploy": "pnpm cloudflare:build && wrangler deploy",
-		"smoke:local": "node test-api.js",
+		"smoke:local": "node --env-file=.dev.vars test-api.js",
+		"cleanup:preview": "node --experimental-strip-types scripts/preview-link-cleanup.mjs",
 		"cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
 	},
 	"keywords": [],
